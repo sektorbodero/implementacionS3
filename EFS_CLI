@@ -1,52 +1,57 @@
-  For example, the following `create-file-system` command creates a file system in the **us\-west\-2**  AWS Region\. The command specifies **MyFirstFS** as the creation token\. For a list of AWS Regions where you can create an Amazon EFS file system, see the [Amazon Web Services General Reference](https://docs.aws.amazon.com/general/latest/gr/rande.html#elasticfilesystem_region)\.
+  Creación de un sistema de archivos con la AWS CLI
+Cuando utiliza la CLI de AWS, crea estos recursos en orden. Primero, crea un sistema de archivos. Luego, puede crear destinos de montaje y cualquier etiqueta opcional adicional para el sistema de archivos utilizando los comandos correspondientes de la CLI de AWS.
 
-  ```
-  $  aws efs create-file-system \
-  --creation-token MyFirstFS \
-  --performance-mode generalPurpose \
-  --throughput-mode bursting \
-  --region us-west-2 \
-  --tags Key=Name,Value="Test File System" Key=developer,Value=rhoward \
-  --profile adminuser
-  ```
+Los siguientes ejemplos utilizan el adminusercomo el profilevalor del parámetro. Debe usar un perfil de usuario apropiado para proporcionar sus credenciales. Para obtener información sobre la CLI de AWS, consulte Configuración con la interfaz de línea de comandos de AWS en la Guía del usuario de la interfaz de línea de comandos de AWS .
 
-  After successfully creating the file system, Amazon EFS returns the file system description as JSON, as shown in the following example\.
+Para crear un sistema de archivos, use el create-file-systemcomando CLI de Amazon EFS (la operación correspondiente es CreateFileSystem ), como se muestra a continuación.
 
-  ```
-  {
-      "OwnerID": "123456789abcd",
-      "CreationToken": "MyFirstFS",
-      "FileSystemId": "fs-c7a0456e",
-      "CreationTime": 1422823614.0,
-      "LifeCycleState": "creating",
-      "Name": "Test File System",
-      "NumberOfMountTargets": 0,
-      "SizeInBytes": {
-          "Value": 6144,
-          "ValueInIA": 0,
-          "ValueInStandard": 6144
+$ aws efs create-file-system \
+--creation-token creation-token \
+--performance-mode generalPurpose \
+--throughput-mode bursting \
+--region aws-region \
+--tags Key=key,Value=value Key=key1,Value=value1 \
+--profile adminuser
+Por ejemplo, el siguiente create-file-systemcomando crea un sistema de archivos en la   región AWS us-west-2 . El comando especifica MyFirstFS como el token de creación. Para obtener una lista de las regiones de AWS donde puede crear un sistema de archivos Amazon EFS, consulte la Referencia general de Amazon Web Services .
+
+$  aws efs create-file-system \
+--creation-token MyFirstFS \
+--performance-mode generalPurpose \
+--throughput-mode bursting \
+--region us-west-2 \
+--tags Key=Name,Value="Test File System" Key=developer,Value=rhoward \
+--profile adminuser
+Después de crear con éxito el sistema de archivos, Amazon EFS devuelve la descripción del sistema de archivos como JSON, como se muestra en el siguiente ejemplo.
+
+{
+    "OwnerID": "123456789abcd",
+    "CreationToken": "MyFirstFS",
+    "FileSystemId": "fs-c7a0456e",
+    "CreationTime": 1422823614.0,
+    "LifeCycleState": "creating",
+    "Name": "Test File System",
+    "NumberOfMountTargets": 0,
+    "SizeInBytes": {
+        "Value": 6144,
+        "ValueInIA": 0,
+        "ValueInStandard": 6144
+    },
+    "PerformanceMode": "generalPurpose",
+    "ThroughputMode": "bursting",
+    "Tags": [ 
+      { 
+         "Key": "Name",
+         "Value": "Test File System"
       },
-      "PerformanceMode": "generalPurpose",
-      "ThroughputMode": "bursting",
-      "Tags": [ 
-        { 
-           "Key": "Name",
-           "Value": "Test File System"
-        },
-        {
-           "Key": "developer",
-           "Value": "rhoward"
-        }
-     ]
-  }
-  ```
+      {
+         "Key": "developer",
+         "Value": "rhoward"
+      }
+   ]
+}
+Amazon EFS también proporciona el describe-file-systemscomando CLI (la operación API correspondiente es DescribeFileSystems ) que puede usar para recuperar una lista de sistemas de archivos en su cuenta, como se muestra a continuación:
 
-  Amazon EFS also provides the `describe-file-systems` CLI command \(the corresponding API operation is [DescribeFileSystems](API_DescribeFileSystems.md)\) that you can use to retrieve a list of file systems in your account, as shown following:
-
-  ```
-  $  aws efs describe-file-systems \
-  --region aws-region \
-  --profile adminuser
-  ```
-
-  A
+$  aws efs describe-file-systems \
+--region aws-region \
+--profile adminuser
+Amazon EFS devuelve una lista de los sistemas de archivos en su cuenta de AWS creada en la región especificada.
